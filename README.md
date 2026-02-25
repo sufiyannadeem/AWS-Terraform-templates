@@ -50,7 +50,6 @@ terraform-aws-project/
 │
 ├── main.tf
 ├── variables.tf
-├── outputs.tf
 ├── provider.tf
 ├── userdata.sh
 └── README.md
