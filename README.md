@@ -1,42 +1,58 @@
-# 🚀 AWS Infrastructure Provisioning using Terraform
+## 🚀 AWS Infrastructure Setup using Terraform
 
-This project demonstrates how to provision a complete AWS infrastructure using **Terraform (Infrastructure as Code)**.
-The setup includes a custom VPC, subnets, EC2 instances, networking components, and S3 integration — all automated using Terraform.
+**(VPC + 2 EC2 + Apache + Load Balancer + S3)**
 
 ---
 
-## 📌 Architecture Overview
+## 📌 Project Overview
 
-* Custom **VPC**
-* Public subnets in multiple AZs
+This project demonstrates how to deploy a basic production-style AWS infrastructure using **Terraform**.
+The setup includes a custom VPC, two EC2 instances running Apache with different web pages, and an Application Load Balancer that distributes traffic between them.
+
+Everything is created using **Infrastructure as Code (IaC)** so the entire environment can be recreated anytime.
+
+---
+
+## 🏗️ Architecture
+
+* Custom VPC
+* Public subnets
 * Internet Gateway
 * Route tables
-* EC2 instances
-* Amazon S3 bucket
-* Security groups
-* Fully automated using Terraform
+* 2 EC2 instances
+* Apache web server on both instances
+* Different web page on each instance
+* Application Load Balancer
+* Target group with health checks
+* S3 bucket (for storage/state or assets)
 
-This project follows best practices for **Infrastructure as Code (IaC)** and reproducible cloud environments.
+Traffic flow:
+
+```
+User → Load Balancer → EC2 Instance 1 or EC2 Instance 2 → Apache Web Page
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
+* AWS (VPC, EC2, ALB, S3)
 * Terraform
-* AWS (VPC, EC2, S3, Networking)
-* AWS CLI
 * Linux
+* Apache Web Server
 
 ---
 
 ## 📂 Project Structure
 
 ```
-.
+terraform-aws-project/
+│
 ├── main.tf
 ├── variables.tf
+├── outputs.tf
 ├── provider.tf
-├── terraform.tfvars
+├── userdata.sh
 └── README.md
 ```
 
@@ -44,20 +60,22 @@ This project follows best practices for **Infrastructure as Code (IaC)** and rep
 
 ## ⚙️ Prerequisites
 
-Make sure you have installed:
+Before running this project, make sure you have:
 
-* Terraform
-* AWS CLI
 * AWS account
-* Configured credentials
+* IAM user with admin or required permissions
+* Terraform installed
+* AWS CLI installed
+* AWS CLI configured
 
 ```bash
 aws configure
+terraform -v
 ```
 
 ---
 
-## 🚀 Deployment Steps
+## 🚀 How to Run
 
 ### 1️⃣ Initialize Terraform
 
@@ -65,19 +83,13 @@ aws configure
 terraform init
 ```
 
-### 2️⃣ Validate configuration
-
-```bash
-terraform validate
-```
-
-### 3️⃣ Plan infrastructure
+### 2️⃣ Check Plan
 
 ```bash
 terraform plan
 ```
 
-### 4️⃣ Apply configuration
+### 3️⃣ Apply Infrastructure
 
 ```bash
 terraform apply
@@ -85,11 +97,55 @@ terraform apply
 
 Type `yes` when prompted.
 
+Terraform will create:
+
+* VPC
+* Subnets
+* EC2 instances
+* Load balancer
+* Security groups
+
+---
+
+## 🌐 Access Application
+
+After deployment, Terraform will output:
+
+```
+LoadBalancer DNS: http://xxxx.elb.amazonaws.com
+```
+
+Open it in browser.
+Refresh multiple times → you will see **different Apache pages** from both servers.
+
+---
+
+## 🧠 Key Learnings
+
+* Terraform state management
+* Infrastructure as Code basics
+* AWS networking (VPC, subnet, routing)
+* Load balancer configuration
+* EC2 provisioning with user data
+* Debugging Terraform issues
+* Security group configuration
+
+---
+
+## ⚠️ Challenges Faced
+
+* Terraform showing “No changes” due to state
+* Load balancer health check failures
+* Security group port issues
+* Apache not accessible initially
+* Understanding resource dependencies
+* Recreating resources using Terraform
+
 ---
 
 ## 🧹 Destroy Infrastructure
 
-To remove all resources:
+To avoid AWS charges:
 
 ```bash
 terraform destroy
@@ -97,39 +153,11 @@ terraform destroy
 
 ---
 
-## 📚 Key Learnings
+## 📸 Output Example
 
-* Infrastructure as Code using Terraform
-* AWS VPC and networking setup
-* Terraform state management
-* Resource dependencies
-* Idempotent deployments
-* Debugging Terraform issues
-* Remote vs local state
-* AWS IAM permissions
-
----
-
-## ⚠️ Challenges Faced
-
-* Terraform state conflicts
-* Resource recreation issues
-* IAM permission errors
-* Networking misconfigurations
-* Understanding Terraform lifecycle
-* Debugging “No changes” message
-* Managing backend state
-
----
-
-## 💡 Future Improvements
-
-* Add remote backend (S3 + DynamoDB)
-* Use Terraform modules
-* Add Auto Scaling
-* Add Load Balancer
-* CI/CD with GitHub Actions
-* EKS deployment
+* Two EC2 instances running Apache
+* Load balancer distributing traffic
+* Different web page on each refresh
 
 ---
 
@@ -137,11 +165,9 @@ terraform destroy
 
 **Nadeem Sufiyan**
 Aspiring DevOps Engineer
-
-* LinkedIn: 
+AWS | Terraform | Kubernetes
 
 ---
 
-## ⭐ If you found this useful
 
-Give this repo a star ⭐ and connect with me on LinkedIn.
+If you’re learning DevOps or Terraform, this is a great beginner-to-intermediate hands-on project.
