@@ -164,7 +164,6 @@ terraform destroy
 
 **Nadeem Sufiyan**
 Aspiring DevOps Engineer
-AWS | Terraform | Kubernetes
 
 ---
 
